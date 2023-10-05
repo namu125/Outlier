@@ -1,0 +1,17 @@
+import pandas
+import numpy
+BIKE = pandas.read_csv("Bike.csv")
+
+
+numeric_col = ['temp','hum','windspeed']
+categorical_col = ['season', 'yr', 'mnth', 'holiday', 'weekday', 'workingday', 'weathersit']
+
+for x in ['windspeed']:
+    q75,q25 = np.percentile(BIKE.loc[:,x],[75,25])
+    intr_qr = q75-q25
+
+    max = q75+(1.5*intr_qr)
+    min = q25-(1.5*intr_qr)
+
+    BIKE.loc[BIKE[x] < min,x] = np.nan
+    BIKE.loc[BIKE[x] > max,x] = np.nan
